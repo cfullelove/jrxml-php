@@ -64,7 +64,7 @@ class ComponentElement extends Component
 			'y' => $this->y
 		);
 
-		$dataBag = new DataBag( $subDataset->getParameters(), $params, $subDataset->getFields(), $rows[0] );
+		$dataBag = new DataBag( $subDataset->getParameters(), $params, $subDataset->getFields(), count( $rows ) > 0 ? $rows[0] : array() );
 
 		// Table Header
 		if ( count( $this->table->getHeader()->children ) > 0 )
