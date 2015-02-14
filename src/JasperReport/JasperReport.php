@@ -103,7 +103,7 @@ class JasperReport
 
 	}
 
-	function processElements( $path, Callable $callback, $context = null )
+	function processElements( $path, $callback, $context = null )
 	{
 		if ( $context == null )
 			$content = $this->root;
@@ -114,7 +114,7 @@ class JasperReport
 		}
 	}
 
-	function processSingleElement( $path, Callable $callback, $context = null )
+	function processSingleElement( $path, $callback, $context = null )
 	{
 		if ( $context == null )
 			$content = $this->root;
