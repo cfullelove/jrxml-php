@@ -2,7 +2,7 @@
 
 ## Usage
 
-```
+```php
 require( "vendor/autoload.php" );
 
 $report = new JasperReport\JasperReport( __DIR__ . "/redbook_roster_published.jrxml" );
