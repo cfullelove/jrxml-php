@@ -15,8 +15,17 @@ $datasource = new JasperReport\Datasource\MysqlDatasource(
 	3306
 );
 
-$pdf = $report->renderReport( new JasperReport\OutputAdapter\FPDFOutputAdapter(), array() );
+$params = array(
+	'param1' => "value1",
+	'param2' => "value2"
+);
 
-file_put_contents( 'test.pdf', $pdf->output( 'test.pdf' ) );
+$pdf = $report->renderReport(
+	new JasperReport\OutputAdapter\FPDFOutputAdapter(),
+	$datasource, 
+	$params
+);
+
+file_put_contents( 'filename.pdf', $pdf->output() );
 
 ```
