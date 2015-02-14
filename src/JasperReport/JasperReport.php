@@ -144,7 +144,7 @@ class JasperReport
 		return $this->dataSource;
 	}
 
-	function renderReport( OutputAdapterInterface $outputAdapter, DatasourceInterface $datasource, $params )
+	function renderReport( OutputAdapter\OutputAdapterInterface $outputAdapter, Datasource\DatasourceInterface $datasource, $params )
 	{
 		$this->outputAdapter = $outputAdapter;
 		$this->datasource = $datasource;

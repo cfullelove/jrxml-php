@@ -138,7 +138,7 @@ class FPDFOutputAdapter implements OutputAdapterInterface
 		$this->pdf->AddPage();
 	}
 
-	function output( $filename )
+	function output( $filename = '' )
 	{
 		return $this->pdf->Output( '', 'S' );
 	}
