@@ -10,7 +10,7 @@ class MysqlDatasource implements DatasourceInterface
 	function __construct( $host, $username, $password, $database, $port )
 	{
 
-		$this->db = @new mysqli(
+		$this->db = new \mysqli(
 			$host,
 			$username,
 			$password,
@@ -20,9 +20,14 @@ class MysqlDatasource implements DatasourceInterface
 
 	}
 
+	function nextPage()
+	{
+		return;
+	}
+
 	function execQuery( $query )
 	{
-		$r = $db->query( $query );
+		$r = $this->db->query( $query );
 
 		if ( $r === false )
 			throw new \Exception( "Error with query" );
