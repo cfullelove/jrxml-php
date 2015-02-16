@@ -1,5 +1,7 @@
 #Readme
 
+jrxml-php is a PHP library that allows for the generation of documents based on Jasper Report XML (jrxml) templates.
+
 ## Usage
 
 ```php
@@ -29,3 +31,28 @@ $pdf = $report->renderReport(
 file_put_contents( 'filename.pdf', $pdf->output() );
 
 ```
+
+##Status
+jrxml-php can only handle simple jrxml reports at this time and should be considered alpha stage software.
+
+### Supported Features
+- Bands:
+	- Page Header
+	- Column Header
+	- Detail
+	- Column Footer
+	- Page Footer
+- Elements:
+	- Static Text
+	- Text Field
+	- Table
+	- Rectangle
+- Parameter and Field evaluation
+- Pluggable Datasource
+- Pluggable OutputAdapter
+
+### Unsupported Features
+- Variables ($V{var})
+- Scriptlets
+- Groups
+- Subreports
