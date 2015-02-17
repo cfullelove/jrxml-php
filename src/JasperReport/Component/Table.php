@@ -72,7 +72,7 @@ class Table
 		}, $node );
 
 		$that->jasperReport->processElements( 'jr:staticText', function ($node) use ($that, & $collection ) {
-			$collection[] = new staticText( $that->jasperReport, $node );
+			$collection[] = new StaticText( $that->jasperReport, $node );
 		}, $node );
 
 		
