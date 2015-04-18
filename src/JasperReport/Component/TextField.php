@@ -28,7 +28,7 @@ class TextField extends Component
 
 		// Text field expression
 		$this->jasperReport->processSingleElement( "jr:textFieldExpression", function ( $node ) use ( $that ) {
-			$that->expression = $node->textContent;
+			$that->expression = $this->jasperReport->expressionFactory( $node->textContent );
 		}, $this->node );
 	}
 
@@ -58,9 +58,7 @@ class TextField extends Component
 			$drawable->verticalAlign = $this->textElement->verticalAlignment;
 
 
-		$drawable->text = $this->evalString(
-			$this->expression, $dataBag
-		);
+		$drawable->text = $this->expression->evaluate( $dataBag );
 		call_user_func( $callback, $drawable );
 	}
 

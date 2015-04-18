@@ -2,7 +2,7 @@
 
 namespace JasperReport\Datasource;
 
-class MysqlDatasource implements DatasourceInterface
+class MysqlDatasource extends AbstractDatasource
 {
 
 	private $db;

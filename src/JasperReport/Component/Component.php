@@ -49,7 +49,7 @@ abstract class Component
 
 
 			$this->jasperReport->processElements( 'jr:printWhenExpression', function ($node ) use ($that ) {
-				$that->printWhenExpression = $node->nodeValue;
+				$that->printWhenExpression = $this->jasperReport->expressionFactory( $node->nodeValue );
 			}, $node );
 		}, $this->node );
 	}
@@ -87,9 +87,7 @@ abstract class Component
 
 	function getPrintWhen( DataBag $dataBag )
 	{
-		$printWhen = $this->evalString(
-			$this->printWhenExpression, $dataBag
-		);
+		$printWhen = ( $this->printWhenExpression == '' ) ? true : $this->printWhenExpression->evaluate( $dataBag );
 
 		if ( $printWhen === false )
 			return false;

@@ -144,6 +144,16 @@ class JasperReport
 		return $this->dataSource;
 	}
 
+	function getDataBag( $params )
+	{
+		return new DataBag( $this->parameters, $params );
+	}
+
+	function getQueryString()
+	{
+		return $this->queryString;
+	}
+
 	function renderReport( OutputAdapter\OutputAdapterInterface $outputAdapter, Datasource\DatasourceInterface $datasource, $params )
 	{
 		$this->outputAdapter = $outputAdapter;
@@ -155,7 +165,7 @@ class JasperReport
 
 		
 		// Execute main query
-		$query = evalQuery( $this->queryString, new DataBag( $this->parameters, $params ) );
+		$query = $datasource->evalQuery( $this->queryString, new DataBag( $this->parameters, $params ) );
 		$rows = $datasource->execQuery( $query );
 
 
@@ -266,6 +276,18 @@ class JasperReport
 			return $this->subDatasets[ $id ];
 		else
 			return false;
+	}
+
+	function expressionFactory( $expressionString )
+	{
+		switch( $this->attributes[ 'language' ] )
+		{
+			case "groovy":
+				return new Expression\GroovyExpression( $expressionString );
+			case "PHP":
+			default:
+				throw new \Exception ( 'Unsupported Language!' );
+		}
 	}
 
 }

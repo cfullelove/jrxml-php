@@ -30,7 +30,7 @@ class DatasetRun
 			$that->jasperReport->processSingleElement(
 				"jr:datasetParameterExpression",
 				function ( $node ) use ( $that, $name ) {
-					$that->parameters[ $name ] = $node->nodeValue;
+					$that->parameters[ $name ] = $that->jasperReport->expressionFactory( $node->nodeValue );
 				},
 				$node
 			);

@@ -46,9 +46,7 @@ class ComponentElement extends Component
 
 		foreach ( $subDataset->getParameters() as $paramDef )
 		{
-			$params[ $paramDef->name ] = \JasperReport\evalString(
-				$this->datasetRun->getParameterExpression( $paramDef->name ),
-				$mainDataBag );
+			$params[ $paramDef->name ] = $this->datasetRun->getParameterExpression( $paramDef->name )->evaluate( $mainDataBag );
 		}
 
 		$query = \JasperReport\evalQuery(
