@@ -90,20 +90,24 @@ class FPDFOutputAdapter implements OutputAdapterInterface
 		switch( $drawable->verticalAlign )
 		{
 			case 'Middle':
-				$lines = ceil( $this->pdf->GetStringWidth( $drawable->text ) / $drawable->width );
-				$yOffset = $this->pdf->FontSize * ( $lines - 0.5 ) - ( $this->pdf->cMargin / 2 );
+				$lines = $this->getStringLines($drawable->text, $drawable->width);
+				$cellHeight = $this->pdf->FontSize * $lines;
+				$yOffset = ($drawable->height - $cellHeight) / 2;
 				$this->pdf->SetXY( $drawable->x, $drawable->y + $yOffset );
 				$this->pdf->MultiCell( $drawable->width, $this->pdf->FontSize, $drawable->text, null, $align );
 				break;
 			case 'Bottom':
-				$lines = ceil( $this->pdf->GetStringWidth( $drawable->text ) / $drawable->width );
-				$yOffset = $this->pdf->FontSize * ( $lines + 0.5 );
-				$this->pdf->SetXY( $drawable->x, $drawable->y + $drawable->height - $yOffset );
+				$lines = $this->getStringLines($drawable->text, $drawable->width);
+				$cellHeight = $this->pdf->FontSize * $lines;
+				error_log(sprintf("CellHeight for \"%s\" is %s", $drawable->text, $cellHeight));
+				$yOffset = $drawable->height - ($cellHeight + $this->pdf->cMargin);
+				$this->pdf->SetXY( $drawable->x, $drawable->y + $yOffset );
 				$this->pdf->MultiCell( $drawable->width, $this->pdf->FontSize, $drawable->text, null, $align );
 				break;
 			case 'Top':
-				$this->pdf->SetXY( $drawable->x, $drawable->y );
+				$this->pdf->SetXY( $drawable->x, $drawable->y + $this->pdf->cMargin );
 				$this->pdf->MultiCell( $drawable->width, $this->pdf->FontSize, $drawable->text, null, $align );
+				break;
 		}		
 
 		
@@ -112,6 +116,36 @@ class FPDFOutputAdapter implements OutputAdapterInterface
 		// $this->pdf->MultiCell( $drawable->width, $this->pdf->FontSize, $drawable->text, null, $align );
 		// $this->pdf->Cell( $drawable->width, $drawable->height, $drawable->text, null, null, $align );
 
+	}
+
+	// Calculate number of lines for text that wraps within a MultiCell with provided width.
+	// Takes into account Cell Margin
+	function getStringLines( $str, $width ) {
+
+		$width = $width - 2*$this->pdf->cMargin;
+
+		$n = 0;
+		
+		$lines = explode("\n", $str);
+
+		foreach($lines as $line) {
+			$w = 0;
+			
+			foreach(explode(" ", $line) as $word) {
+				$wordLength = $this->pdf->GetStringWidth($word);
+				if ($w + $wordLength > $width) {
+					$n++;
+					$w = $wordLength;
+				}
+				else {
+					$w = $w + $wordLength + $this->pdf->GetStringWidth(" ");
+				}
+				
+			}
+			$n++;
+		}
+
+		return $n;
 	}
 
 	function hex2RGB( $hexStr ) {
@@ -138,7 +172,7 @@ class FPDFOutputAdapter implements OutputAdapterInterface
 			return false; //Invalid hex color code
 		}
 		return $rgbArray; // returns the rgb string or the associative array
-}
+	}
 
 	function nextPage()
 	{
